@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Об'єднаний Проєкт: Всі ЛР</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <script defer src="js/script.js"></script>
+  <script defer src="js/mobile-menu.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <header class="section header">
+    <div class="container header-container">
+      <a href="#" class="logo-link">
+        <img src="images/logo.svg" alt="ProjectX Логотип" class="logo-svg">
+      </a>
+      <nav id="desktop-nav">
+        <a href="#section1">Flex/Grid</a>
+        <a href="#section2">Адаптив</a>
+        <a href="#section3">JavaScript</a>
+        <a href="#section4">REST API</a>
+      </nav>
+      <button id="mobile-menu-toggle" class="mobile-menu-toggle" aria-label="Відкрити меню" aria-expanded="false">
+        <img src="images/burger-menu-icon.svg" alt="Меню" class="burger-icon">
+      </button>
+    </div>
+  </header>
+
+  <nav id="mobile-nav" class="mobile-nav hidden" aria-hidden="true">
+    <a href="#section1">Flex/Grid</a>
+    <a href="#section2">Адаптив</a>
+    <a href="#section3">JavaScript</a>
+    <a href="#section4">REST API</a>
+    <button id="mobile-menu-close" class="mobile-menu-close" aria-label="Закрити меню">&times;</button>
+  </nav>
+
+  <main>
+    <section id="section1" class="section">
+      <div class="container">
+        <h2>ЛР1 — Статична верстка</h2>
+        <p id="expandableText">Тут використовуються Flexbox та Grid Layout для розміщення блоків сторінки. Цей текст спеціально зроблено довшим, щоб продемонструвати функціонал кнопки "читати далі". Flexbox допомагає легко вирівнювати елементи в одному напрямку, тоді як Grid Layout дозволяє створювати складні двовимірні сітки для більш комплексного розміщення контенту на сторінці. Обидва підходи є ключовими для сучасної веб-розробки та адаптивного дизайну.</p>
+        <button id="toggleTextButton" class="toggle-button">Читати далі</button>
+      </div>
+    </section>
+
+    <section id="section2" class="section alt">
+      <div class="container">
+        <h2>ЛР2 — Адаптивна верстка</h2>
+        <p>Сторінка адаптована до різних розмірів екранів з використанням media-запитів.</p>
+        <p>Навігаційне меню, адаптивна типографіка та оформлення елементів з transition.</p>
+        
+        <div class="responsive-image-container">
+            <img src="https://picsum.photos/seed/uproject/800/400" alt="Випадкове зображення для демонстрації" class="responsive-img">
+        </div>
+      </div>
+    </section>
+
+    <section id="section3" class="section">
+      <div class="container">
+        <h2>ЛР3 — JavaScript + Інтерактив</h2>
+        <p>Тут реалізовані форма, модальне вікно та кнопка розгортання тексту.</p>
+        <button id="openModal">Відкрити модальне вікно</button>
+        <div id="modal" class="modal hidden">
+          <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Привіт! Це модальне вікно</h3>
+            <p>Тут могла б бути ваша реклама :)</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="section4" class="section alt">
+      <div class="container">
+        <h2>ЛР4 — Робота з API</h2>
+        <label for="limit">Кількість постів на сторінку:</label>
+        <input type="number" id="limit" value="5" min="1" max="20" required />
+        <button id="fetch-posts">Отримати пости</button>
+        <ul id="posts-list"></ul>
+        <p id="message" class="message"></p>
+      </div>
+    </section>
+
+    <!-- TODO App Section -->
+    <section id="todo-section" class="section">
+        <div class="container">
+            <h2>ЛР4 - TODO App (MockAPI)</h2>
+            <div class="todo-app">
+                <form id="addTodoForm" class="add-todo-form">
+                    <input type="text" id="newTodoInput" placeholder="Додати нове завдання..." required>
+                    <button type="submit">Додати</button>
+                </form>
+                <ul id="todoList" class="todo-list"></ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Swiper Slider Section -->
+    <section id="slider-section" class="section alt">
+      <div class="container">
+          <h2>ЛР - Swiper.js Слайдер</h2>
+          <!-- Slider main container -->
+          <div class="swiper mySwiper">
+              <!-- Additional required wrapper -->
+              <div class="swiper-wrapper">
+                  <!-- Slides -->
+                  <div class="swiper-slide">Slide 1 Content <img src="https://picsum.photos/seed/slide1/600/300" alt="Slide 1"></div>
+                  <div class="swiper-slide">Slide 2 Content <img src="https://picsum.photos/seed/slide2/600/300" alt="Slide 2"></div>
+                  <div class="swiper-slide">Slide 3 Content <img src="https://picsum.photos/seed/slide3/600/300" alt="Slide 3"></div>
+                  <div class="swiper-slide">Slide 4 Content <img src="https://picsum.photos/seed/slide4/600/300" alt="Slide 4"></div>
+                  <div class="swiper-slide">Slide 5 Content <img src="https://picsum.photos/seed/slide5/600/300" alt="Slide 5"></div>
+              </div>
+              <!-- If we need pagination -->
+              <div class="swiper-pagination"></div>
+
+              <!-- If we need navigation buttons -->
+              <div class="swiper-button-prev"></div>
+              <div class="swiper-button-next"></div>
+          </div>
+      </div>
+    </section>
+
+    <!-- Contact Form Section -->
+    <section id="contact-section" class="section alt">
+      <div class="container">
+          <h2>ЛР - Форма Зворотного Зв'язку</h2>
+          <form id="contactForm" class="contact-form">
+              <div class="form-group">
+                  <label for="userName">Ім'я:</label>
+                  <input type="text" id="userName" name="userName" required>
+              </div>
+              <div class="form-group">
+                  <label for="userEmail">Email:</label>
+                  <input type="email" id="userEmail" name="userEmail" required>
+              </div>
+              <div class="form-group">
+                  <label for="userMessage">Повідомлення:</label>
+                  <textarea id="userMessage" name="userMessage" rows="5" required></textarea>
+              </div>
+              <button type="submit" class="submit-button">Відправити</button>
+          </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="section footer">
+    <div class="container">
+      <p>&copy; 2025 Усі права захищено</p>
+    </div>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+</body>
+</html>

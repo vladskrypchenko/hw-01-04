@@ -1,0 +1,671 @@
+:root {
+    --main-color: #0779e4; /* Основной цвет, взят из акцентов в styles.css */
+    --secondary-color: #333; /* Темный цвет для текста, хедера, футера */
+    --light-bg: #f4f4f4; /* Светлый фон для body */
+    --alt-bg: #e2e2e2; /* Альтернативный фон для секций */
+    --text-color: #333;
+    --font-family: 'Roboto', sans-serif;
+    --container-max-width: 1200px;
+    --container-padding: 1rem;
+    --section-padding: 3rem 1rem;
+    --white-color: #fff;
+    --modal-shadow: rgba(0,0,0,0.4);
+    --item-shadow: rgba(0,0,0,0.1);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0; /* Добавил сброс margin */
+    padding: 0; /* Добавил сброс padding */
+}
+
+body {
+  font-family: var(--font-family);
+  margin: 0; /* Это уже есть в *, но оставим для ясности */
+  padding: 0; /* Это уже есть в *, но оставим для ясности */
+  background-color: var(--light-bg);
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+.container {
+  max-width: var(--container-max-width); /* Используем переменную */
+  margin: auto;
+  overflow: hidden; /* Оставим для предотвращения проблем с float */
+  padding: var(--container-padding); /* Используем переменную и отступы со всех сторон */
+}
+
+.header-container { /* Для управления flex элементами в хедере */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative; /* !!! ВАЖНО для абсолютного позиционирования дочерних элементов !!! */
+}
+
+.logo-link {
+    display: inline-block; /* Чтобы ссылка не занимала всю ширину */
+}
+
+.logo-svg {
+    display: block; /* Убирает лишние отступы под img */
+    height: 30px; /* Задаем высоту логотипа, ширина подстроится по viewBox */
+    width: auto;
+}
+
+.header {
+  background: var(--secondary-color);
+  color: var(--white-color);
+  padding-top: 20px; /* Уменьшил padding-top для более компактного хедера */
+  padding-bottom: 20px; /* Добавил padding-bottom */
+  min-height: auto; /* Убрал min-height, пусть высота определяется контентом и паддингами */
+  border-bottom: var(--main-color) 3px solid;
+}
+
+.header a {
+  color: var(--white-color);
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 16px;
+  font-weight: bold; /* Из старого файла */
+}
+
+.header nav {
+  float: right;
+  /* margin-top: 10px; Удалено, т.к. вертикальное выравнивание лучше через flex/grid или line-height */
+}
+
+.header nav a {
+  padding: 0 15px;
+  line-height: 40px; /* Для вертикального выравнивания, если h1 тоже будет иметь line-height */
+}
+
+.header nav a:hover {
+    text-decoration: underline; /* Из старого файла */
+}
+
+.header h1 {
+  /* float: left; Убираем float, так как используем flex */
+  margin: 0; /* Уже есть в * */
+  padding: 0; /* Уже есть в * */
+  line-height: 40px; /* Для вертикального выравнивания с навигацией */
+  font-size: 24px; /* Немного уменьшил для баланса */
+}
+
+.section {
+  padding: var(--section-padding); /* Используем переменную */
+  border-bottom: 1px #ccc solid;
+}
+
+.section:last-child {
+  border-bottom: none;
+}
+
+.section h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: var(--main-color);
+  animation: fadeInSlideUp 0.8s ease-out forwards;
+  /* animation-delay: 0.2s; /* Можно добавить задержку, если нужно */
+}
+
+.alt {
+  background-color: var(--alt-bg);
+}
+
+.footer {
+  background: #222; /* Из старого файла, темнее */
+  color: var(--white-color);
+  text-align: center;
+  padding: 20px 1rem; /* Добавил padding по бокам из --container-padding */
+  margin-top: 20px;
+}
+
+/* Стили для модального окна */
+.hidden { /* Общий класс для скрытия элементов, как в старом css/style.css */
+    display: none !important;
+}
+
+.modal {
+  /* display: none; Будет управляться классом .hidden */
+  position: fixed;
+  z-index: 999; /* Увеличил z-index */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: var(--modal-shadow);
+  padding-top: 60px; /* Из старого файла */
+}
+
+/* .modal.hidden удален, т.к. есть общий .hidden */
+
+.modal-content {
+  background-color: var(--white-color);
+  margin: 10% auto; /* Изменил margin для лучшего центрирования */
+  padding: 2rem; /* Из старого файла */
+  border: 1px solid #888;
+  width: 70%; /* Среднее между 60% и 80% */
+  max-width: 700px; /* Добавил max-width для очень больших экранов */
+  box-shadow: 0 0 15px rgba(0,0,0,0.2); /* Из старого файла */
+  animation-name: animatetop;
+  animation-duration: 0.4s;
+}
+
+@keyframes animatetop {
+  from {top: -300px; opacity: 0}
+  to {top: 0; opacity: 1}
+}
+
+@keyframes fadeInSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Стили для списка постов */
+#posts-list {
+    list-style-type: none;
+    padding: 0; /* Уже есть в * */
+}
+
+#posts-list li {
+    background: var(--white-color);
+    margin: 1rem 0; /* Из старого файла */
+    padding: 1rem; /* Из старого файла */
+    border-radius: 5px;
+    box-shadow: 0 2px 5px var(--item-shadow); /* Из старого файла + переменная */
+    border-left: 5px solid var(--main-color); /* Из старого файла */
+}
+
+#posts-list li h4 {
+    margin-top: 0; /* Уже есть в * */
+    color: var(--main-color);
+    margin-bottom: 0.5rem; /* Добавил отступ снизу для заголовка поста */
+}
+
+/* Стили для сообщений */
+.message {
+    text-align: center;
+    padding: 10px;
+    margin-top: 1rem; /* Из старого файла */
+    border-radius: 5px;
+    font-weight: bold; /* Из старого файла */
+    /* Цвет будет устанавливаться из JS, как и было */
+}
+
+/* Адаптивность */
+@media(max-width: 768px){
+  .header-container { /* Обновляем для мобильных */
+    flex-direction: column;
+  }
+
+  .logo-link {
+    margin-bottom: 15px; /* Отступ снизу для лого на мобильных */
+  }
+
+  .header h1, /* Этот селектор .header h1 больше не актуален для лого, но может использоваться для других h1 в хедере если появятся */
+  #desktop-nav { /* Перенес #desktop-nav сюда, чтобы объединить логику скрытия */
+    display: none; /* Скрываем десктопную навигацию */
+    /* float: none; Это уже не нужно */
+    /* text-align: center; Это уже не нужно */
+    /* width: 100%; Это уже не нужно */
+    /* line-height: normal; Это уже не нужно */
+  }
+
+  /* Убираем старые стили для .header nav, т.к. #desktop-nav скрыта, а #mobile-nav имеет свои стили */
+  /* .header nav{ ... } */
+  /* .header nav a { ... } */
+  /* .header nav a:last-child { ... } */
+
+  .mobile-menu-toggle {
+    display: block !important; /* !!! Убедимся, что кнопка отображается и переопределяем возможное display:none !!! */
+    /* 기존 스타일 유지 */
+    background: none;
+    border: none;
+    color: var(--white-color); 
+    cursor: pointer;
+    padding: 0.5rem;
+    position: absolute; 
+    right: var(--container-padding); 
+    top: 50%; 
+    transform: translateY(-50%);
+    z-index: 1001; 
+    line-height: 0;
+  }
+
+  .header h1, /* Убираем этот блок, так как он больше не актуален для лого */
+  .header nav{
+    float: none;
+    text-align: center;
+    width: 100%;
+    line-height: normal; /* Сброс line-height для мобильных */
+  }
+
+  .header nav a {
+    display: block;
+    padding: 10px;
+    border-bottom: 1px #444 dotted;
+    line-height: normal; /* Сброс line-height для мобильных */
+  }
+  
+  .header nav a:last-child {
+      border-bottom: none; /* Убрать бордер у последней ссылки в мобильном меню */
+  }
+
+  #desktop-nav {
+    /* ... existing code ... */
+  }
+
+  .container {
+    width: 95%; /* Оставим для мобильных, как было */
+    padding: var(--container-padding) 10px; /* Уменьшим боковые паддинги */
+  }
+  
+  .modal-content {
+    width: 90%; /* Увеличим ширину модалки на мобильных */
+    margin: 15% auto; 
+    padding: 1.5rem; /* Уменьшим паддинг в модалке на мобильных */
+  }
+
+  .section {
+    padding: 2rem 1rem; /* Уменьшим паддинги секций на мобильных */
+  }
+}
+
+/* Дополнительная точка перелома для очень маленьких экранов */
+@media (max-width: 480px) {
+    .header .logo-svg { /* Уменьшаем лого на очень маленьких экранах */
+        height: 24px;
+    }
+
+    .header-container .mobile-menu-toggle {
+        font-size: 1.8rem; /* Немного уменьшим кнопку бургер */
+    }
+
+    .modal-content {
+        width: 95%;
+        padding: 1rem;
+    }
+
+    .mobile-nav a {
+        font-size: 1.5rem;
+        margin: 1rem 0;
+    }
+}
+
+/*
+Пример подхода Mobile First (для иллюстрации):
+.some-element {
+    width: 100%;
+    background: lightblue;
+    padding: 10px;
+}
+@media (min-width: 769px) {
+    .some-element {
+        width: 50%;
+        background: lightgreen;
+    }
+}
+
+@media (min-width: 1024px) {
+    .some-element {
+        width: 30%;
+        background: lightcoral;
+    }
+}
+*/
+
+/*
+Для респонсивных фоновых изображений (если будут):
+.hero-section {
+    background-image: url('../images/hero-1x.jpg');
+}
+
+@media (min-resolution: 192dpi), (min-resolution: 2dppx) {
+    .hero-section {
+        background-image: url('../images/hero-2x.jpg');
+    }
+}
+*/
+
+/* Responsive Image from API */
+.responsive-image-container {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    background-color: #eee; /* Легкий фон, пока изображение грузится */
+    border-radius: 5px;
+    overflow: hidden; /* Если изображение будет больше контейнера до применения стилей */
+}
+
+.responsive-img {
+    display: block; /* Убирает отступ под изображением */
+    width: 100%;    /* Занимает всю ширину контейнера */
+    max-width: 100%; /* Гарантирует, что не выйдет за пределы */
+    height: auto;   /* Сохраняет пропорции */
+    border-radius: 5px;
+}
+
+/* Mobile Menu Styles */
+.mobile-menu-toggle {
+    display: none; /* Скрыто по умолчанию, появится в медиа-запросе */
+    background: none;
+    border: none;
+    color: var(--white-color); /* SVG иконка унаследует этот цвет */
+    /* font-size: 2rem;  Удаляем, т.к. размер будет у SVG */
+    cursor: pointer;
+    padding: 0.5rem;
+    position: absolute; /* Позиционируем относительно хедера */
+    right: var(--container-padding);
+    top: 50%; /* Центрируем относительно высоты хедера */
+    transform: translateY(-50%);
+    z-index: 1001; /* Выше чем .mobile-nav, чтобы кнопка была кликабельна */
+    line-height: 0; /* Убираем возможное влияние line-height на img */
+}
+
+.burger-icon {
+    display: block; /* Для корректного отображения и центрирования */
+    width: 25px;    /* Задаем размер иконки */
+    height: 25px;
+    /* fill: currentColor;  Это уже задано в SVG, но можно было бы и тут */
+}
+
+/* Удаляем стили для CSS-бургера и его анимации */
+/*
+.mobile-menu-toggle .icon-bar {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: var(--white-color);
+    margin: 5px 0;
+    transition: all 0.3s ease-in-out;
+}
+
+.mobile-menu-toggle[aria-expanded="true"] .icon-bar:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+.mobile-menu-toggle[aria-expanded="true"] .icon-bar:nth-child(2) {
+    opacity: 0;
+}
+.mobile-menu-toggle[aria-expanded="true"] .icon-bar:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+}
+*/
+
+.mobile-nav {
+    display: none; /* Используем display, а не только класс hidden для начального состояния */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh; /* На всю высоту экрана */
+    background-color: rgba(0,0,0,0.95); /* Полупрозрачный фон */
+    z-index: 1000; /* Выше чем модальное окно */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    /* transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out; /* Плавное появление/исчезновение */
+}
+
+.mobile-nav.hidden {
+    display: none !important; /* Переопределяем display:flex если он установлен JSом */
+    /* opacity: 0; */
+    /* visibility: hidden; */
+}
+
+.mobile-nav.active { /* Класс для показа меню */
+    display: flex;
+    /* opacity: 1; */
+    /* visibility: visible; */
+}
+
+.mobile-nav a {
+    color: var(--white-color);
+    text-decoration: none;
+    font-size: 1.8rem;
+    margin: 1.5rem 0;
+    transition: color 0.3s ease;
+}
+
+.mobile-nav a:hover {
+    color: var(--main-color);
+}
+
+.mobile-menu-close {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    background: none;
+    border: none;
+    color: var(--white-color);
+    font-size: 2.5rem;
+    cursor: pointer;
+}
+/* Конец стилей мобильного меню */
+
+/* Swiper Custom Styles */
+#slider-section .swiper {
+    width: 100%;
+    height: auto; /* Adjust as needed, or set fixed height */
+    padding-bottom: 40px; /* Space for pagination */
+}
+
+#slider-section .swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: var(--white-color);
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+
+    /* Center content */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    min-height: 250px; /* Minimum height for slides */
+}
+
+#slider-section .swiper-slide img {
+    display: block;
+    max-width: 80%;
+    height: auto;
+    border-radius: 5px;
+    margin-top: 15px;
+}
+
+/* Style Swiper navigation buttons and pagination to match the site theme */
+#slider-section .swiper-button-next,
+#slider-section .swiper-button-prev {
+    color: var(--main-color);
+}
+
+#slider-section .swiper-pagination-bullet-active {
+    background: var(--main-color);
+}
+
+/* Contact Form Styles */
+.contact-form {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background: var(--white-color);
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-color);
+    font-weight: bold;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: var(--font-family);
+    font-size: 1rem;
+}
+
+.form-group textarea {
+    resize: vertical;
+}
+
+.submit-button {
+    display: inline-block;
+    background-color: var(--main-color);
+    color: var(--white-color);
+    padding: 12px 25px;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+    background-color: #0056b3; /* Darker shade of main-color */
+}
+
+/* Expand/Collapse Text Styles */
+#expandableText {
+    max-height: 60px; /* Adjust based on line-height and desired initial visible lines (approx 3 lines) */
+    overflow: hidden;
+    transition: max-height 0.5s ease-in-out;
+    position: relative; /* For potential pseudo-element fade-out */
+}
+
+#expandableText.expanded {
+    max-height: 1000px; /* Large enough to show all content */
+}
+
+.toggle-button {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 8px 15px;
+    background-color: var(--secondary-color);
+    color: var(--white-color);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.toggle-button:hover {
+    background-color: var(--main-color);
+}
+
+/* TODO App Styles */
+.todo-app {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background: var(--white-color);
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.add-todo-form {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.add-todo-form input[type="text"] {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px 0 0 4px;
+    font-size: 1rem;
+}
+
+.add-todo-form button {
+    padding: 10px 20px;
+    background-color: var(--main-color);
+    color: var(--white-color);
+    border: none;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.add-todo-form button:hover {
+    background-color: #0056b3;
+}
+
+.todo-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.todo-list li {
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.todo-list li:last-child {
+    border-bottom: none;
+}
+
+.todo-list li.completed .todo-text {
+    text-decoration: line-through;
+    color: #aaa;
+}
+
+.todo-text {
+    flex-grow: 1;
+    margin-left: 10px;
+    cursor: pointer; /* Для отметки выполнения */
+}
+
+.todo-list .delete-todo-btn {
+    background: none;
+    border: none;
+    color: #ff4d4d;
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 5px;
+}
+
+.todo-list .delete-todo-btn:hover {
+    color: #cc0000;
+}
+
+.todo-list .complete-checkbox {
+    margin-right: 10px;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+}
