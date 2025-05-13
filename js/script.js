@@ -173,6 +173,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const addTodoForm = document.getElementById('addTodoForm');
     const newTodoInput = document.getElementById('newTodoInput');
     const todoList = document.getElementById('todoList');
+    const filterButtonsContainer = document.querySelector('.todo-filters');
+
+    let allTodos = []; // Массив для хранения всех задач с сервера
+    let currentFilter = 'all'; // Текущий активный фильтр
 
     // --- Render TODO item ---
     function renderTodoItem(todo) {
@@ -204,14 +208,30 @@ document.addEventListener('DOMContentLoaded', () => {
         todoList.appendChild(li);
     }
 
+    // --- Render Filtered TODOs ---
+    function renderFilteredTodos() {
+        todoList.innerHTML = ''; // Очищаем список перед рендерингом
+        let todosToRender = allTodos;
+
+        if (currentFilter === 'active') {
+            todosToRender = allTodos.filter(todo => !todo.completed);
+        } else if (currentFilter === 'completed') {
+            todosToRender = allTodos.filter(todo => todo.completed);
+        }
+        // Если 'all', то todosToRender остается allTodos
+
+        todosToRender.forEach(todo => renderTodoItem(todo));
+    }
+
     // --- Fetch TODOs --- (GET)
     async function fetchTodos() {
         try {
             const response = await fetch(todoApiUrl);
             if (!response.ok) throw new Error(`Cannot fetch todos: ${response.status}`);
-            const todos = await response.json();
-            todoList.innerHTML = ''; // Clear previous list
-            todos.forEach(todo => renderTodoItem(todo));
+            allTodos = await response.json(); // Сохраняем все задачи
+            // Убедимся, что у каждой задачи есть свойство completed
+            allTodos = allTodos.map(todo => ({ ...todo, completed: todo.completed || false }));
+            renderFilteredTodos(); // Рендерим согласно текущему фильтру (изначально 'all')
         } catch (error) {
             console.error('Error fetching todos:', error);
             todoList.innerHTML = '<li>Не вдалося завантажити завдання.</li>';
@@ -233,7 +253,8 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             if (!response.ok) throw new Error(`Cannot add todo: ${response.status}`);
             const addedTodo = await response.json();
-            renderTodoItem(addedTodo); // Отображаем добавленную задачу
+            allTodos.push({...addedTodo, completed: addedTodo.completed || false }); // Добавляем в общий массив
+            renderFilteredTodos(); // Перерисовываем список с учетом фильтра
         } catch (error) {
             console.error('Error adding todo:', error);
         }
@@ -252,13 +273,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify(updatedTodo)
             });
             if (!response.ok) throw new Error(`Cannot update todo: ${response.status}`);
-            // Обновляем вид элемента в списке
-            const listItem = todoList.querySelector(`li[data-id="${todoId}"]`);
-            if (listItem) {
-                listItem.classList.toggle('completed', isCompleted);
-                const checkbox = listItem.querySelector('.complete-checkbox');
-                if(checkbox) checkbox.checked = isCompleted;
+            // Обновляем статус в локальном массиве allTodos
+            const todoIndex = allTodos.findIndex(t => t.id === todoId);
+            if (todoIndex > -1) {
+                allTodos[todoIndex].completed = isCompleted;
             }
+            renderFilteredTodos(); // Перерисовываем список
         } catch (error) {
             console.error('Error updating todo:', error);
         }
@@ -269,11 +289,9 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const response = await fetch(`${todoApiUrl}/${todoId}`, { method: 'DELETE' });
             if (!response.ok) throw new Error(`Cannot delete todo: ${response.status}`);
-            // Удаляем элемент из списка
-            const listItem = todoList.querySelector(`li[data-id="${todoId}"]`);
-            if (listItem) {
-                listItem.remove();
-            }
+            // Удаляем элемент из локального массива allTodos
+            allTodos = allTodos.filter(t => t.id !== todoId);
+            renderFilteredTodos(); // Перерисовываем список
         } catch (error) {
             console.error('Error deleting todo:', error);
         }
@@ -287,6 +305,22 @@ document.addEventListener('DOMContentLoaded', () => {
             if (todoText) {
                 addTodo(todoText);
                 newTodoInput.value = '';
+            }
+        });
+    }
+
+    // --- Filter Buttons Event Listener ---
+    if (filterButtonsContainer) {
+        filterButtonsContainer.addEventListener('click', (e) => {
+            if (e.target.matches('.filter-btn')) {
+                const filterValue = e.target.dataset.filter;
+                if (filterValue !== currentFilter) {
+                    currentFilter = filterValue;
+                    // Обновляем активную кнопку
+                    filterButtonsContainer.querySelector('.filter-btn.active').classList.remove('active');
+                    e.target.classList.add('active');
+                    renderFilteredTodos();
+                }
             }
         });
     }
